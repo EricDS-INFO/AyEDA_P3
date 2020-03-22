@@ -26,7 +26,7 @@ int w =  X*size_;              // Width of the window (cell size and number by X
 int h =  Y*size_;              // Heigt of the window (cell size and number by Y axis cells)
 
 
-board_t cells(X, Y, size_);
+board_t cells(Y, X, size_);
 //cell_t Cells [X][Y];
 
 // This function displays each of the alive cells
@@ -52,21 +52,21 @@ void display()
             if (cells.at(i,j).get_state()) 
                 // The next function paints the alive cell in the position of the window as it is in the matrix of cells 
                 //            x dimension , y dimension
-                glVertex2f(cells.size()/2 + i*size_, cells.size()/2 + j*size_); 
+                glVertex2f(cells.size()/2 + i * size_, cells.size()/2 + j * size_); 
 
                 /// MOUSE CELL PAINTING ///
 
     // This conditional check the mouse movement for the user giving life to cells
     if (m_down && m_x > 0 && m_y > 0 &&  
-        m_x < cells.get_n() * cells.size() && 
-        m_y < cells.get_m() * cells.size() )
+        m_x < cells.get_m() * cells.size() && 
+        m_y < cells.get_n() * cells.size() )
 
-       cells.at( m_x/cells.size(), m_y/cells.size()).set_state(true);
+       cells.at(m_y/cells.size(), m_x/cells.size()).set_state(true);
         
     // if the mouse isn't  clicking the last position of the mouse is drawed as white but not setted the cell as alive
     else {
-        int i = m_x/cells.size();  int j = m_y/cells.size();
-        glVertex2f(cells.size()/2 + cells.size() * i , cells.size()/2 + cells.size() * j);
+        int j = m_x/cells.size();  int i = m_y/cells.size();
+        glVertex2f(cells.size()/2 + cells.size() * i, cells.size()/2 + cells.size() * j );
     }
     // finally we end the "drawing time"
     glEnd();
@@ -77,56 +77,18 @@ void display()
 }
 
 
-// this function captures the left cell values
-int left (int pos)
-{
-    if (pos == 0 ) 
-        pos = X - 1; 
-    else 
-        pos--;
- return pos;
-}
-
-
-// this function captures the right cell values
-int right (int pos)
-{
-    if (pos == X - 1 ) 
-        pos = 0; 
-    else 
-        pos++;
- return pos;
-}
-
-// this function captures the up cell values
-int up (int pos)
-{
-    if (pos == 0 ) //if actual position is 0 in y axis in matrix, we get the greater number
-        pos = Y-1; 
-    else 
-        pos--;     // we decrease one position in y axis.
- return pos;
-}
-
-// this function captures the down cell values
-int down (int pos)
-{
-    if (pos == Y - 1 ) 
-        pos = 0; 
-    else 
-        pos++;
- return pos;
-}
 
 // this function updates each cell values in the matrix in order to capture the state of the rules
 void update()
 {
       // We watch the entire matrix of cells (each cell) for checking the status
-      for (int i = 0; i < cells.get_n(); ++i) for (int j = 0; j < cells.get_m(); ++j)
+      for (int i = 0; i < cells.get_n(); ++i) 
+        for (int j = 0; j < cells.get_m(); ++j)
       {
             cells.at(i, j).count_neighbours(cells);
       }
-      for (int i = 0; i < cells.get_n(); ++i) for (int j = 0; j < cells.get_m(); ++j)
+      for (int i = 0; i < cells.get_n(); ++i) 
+        for (int j = 0; j < cells.get_m(); ++j)
       {
             cells.at(i, j).updateState();
       }
@@ -151,7 +113,8 @@ void selector( unsigned char key, int xmouse, int ymouse)
     // CLEAR STAGE 
     case '3':   
         // this check all the matrix killing all the cells
-        for (int i = 0; i < cells.get_n(); ++i) for (int j = 0; j < cells.get_m(); ++j) 
+        for (int i = 0; i < cells.get_n(); ++i) 
+            for (int j = 0; j < cells.get_m(); ++j) 
         {
                 cells.at(i, j).set_next(false);
                 cells.at(i, j).set_state(false); 
@@ -199,7 +162,7 @@ void timer(int = 0)
 }
 
 // this function tracks the mouse position and interaction
-void mouse (int button, int state, int ax, int ay)
+void mouse (int button, int state, int ay, int ax)
 {
     m_y = ay; //| -> position
     m_x = ax; //|
@@ -207,7 +170,7 @@ void mouse (int button, int state, int ax, int ay)
 }
 
 // captures the mouse motion in the scene
-void motion (int ax, int ay)
+void motion (int ay, int ax)
 {
     m_x = ax;
     m_y = ay;
@@ -215,7 +178,7 @@ void motion (int ax, int ay)
 
 
 // captures the passive mouse motion in the scene
-void motionpass (int ax, int ay)
+void motionpass (int ay, int ax)
 {
    m_x = ax;
    m_y = ay;

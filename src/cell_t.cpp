@@ -92,10 +92,11 @@ int cell_t::updateState(void)
     
     if ( alive_ == 0 )
     {
-        if (alive_neighbours_ == 3)
-            alive_ = 1;
-        else
+        if (alive_neighbours_ != 3 &&
+            alive_neighbours_ != 6)
             alive_ = 0;
+        else
+            alive_ = 1;
     }
 
     return alive_;   
@@ -134,23 +135,31 @@ int cell_t::count_neighbours(const board_t& board)
         int m = board.get_m();
         // Check the basic axis
         /* LEFT */
-        if (board.at(left(i_, n), j_).get_state() == 1)         neighbours++;
+        if (board.at(i_, left(j_, m)).get_state() == 1)         
+            neighbours++;
         /* RIGHT */
-        if (board.at(right(i_, n), j_).get_state() == 1)         neighbours++;
+        if (board.at(i_, right(j_, m)).get_state() == 1)         
+            neighbours++;
         /* UP */
-        if (board.at(i_, up(j_, m)).get_state() == 1)         neighbours++;
+        if (board.at(up(i_, n), j_).get_state() == 1)         
+            neighbours++;
         /* DOWN */
-        if (board.at(i_, down(j_, m)).get_state() == 1)         neighbours++;
+        if (board.at(down(i_, n), j_).get_state() == 1)         
+            neighbours++;
 
         //check the diagonal axis:
-        /*1st square*/
-        if (board.at(left(i_, n), up(j_, m)).get_state() == 1)     neighbours++;
-        /*2nd square*/
-        if (board.at(right(i_, n), up(j_, m)).get_state() == 1)     neighbours++;
-        /*3rd square*/
-        if (board.at(left(i_, n), down(j_, m)).get_state() == 1)     neighbours++;
-        /*4th square*/
-        if (board.at(right(i_, n), down(j_, m)).get_state() == 1)     neighbours++;   
+        /*1st edje*/
+        if (board.at(up(i_, n), left(j_, m)).get_state() == 1)     
+            neighbours++;
+        /*2nd edje*/
+        if (board.at(up(i_, n), right(j_, m)).get_state() == 1)     
+            neighbours++;
+        /*3rd edje*/
+        if (board.at(down(i_, n), left(j_, m)).get_state() == 1)     
+            neighbours++;
+        /*4th edje*/
+        if (board.at(down(i_, n), right(j_, m)).get_state() == 1)     
+            neighbours++;   
        
     }
         
@@ -163,10 +172,10 @@ int cell_t::count_neighbours(const board_t& board)
 
 
 // this function captures the left cell values
-int cell_t::left(int pos, int n)
+int cell_t::left(int pos, int m)
 {
     if (pos == 0 ) 
-        pos = n - 1; 
+        pos = m - 1; 
     else 
         pos--;
  return pos;
@@ -174,9 +183,9 @@ int cell_t::left(int pos, int n)
 
 
 // this function captures the right cell values
-int cell_t::right(int pos, int n)
+int cell_t::right(int pos, int m)
 {
-    if (pos == n - 1 ) 
+    if (pos == m - 1 ) 
         pos = 0; 
     else 
         pos++;
@@ -184,19 +193,19 @@ int cell_t::right(int pos, int n)
 }
 
 // this function captures the up cell values
-int cell_t::up(int pos, int m)
+int cell_t::up(int pos, int n)
 {
     if (pos == 0 ) //if actual position is 0 in y axis in matrix, we get the greater number
-        pos = m - 1; 
+        pos = n - 1; 
     else 
         pos--;     // we decrease one position in y axis.
  return pos;
 }
 
 // this function captures the down cell values
-int cell_t::down(int pos, int m)
+int cell_t::down(int pos, int n)
 {
-    if (pos == m - 1 ) 
+    if (pos == n - 1 ) 
         pos = 0; 
     else 
         pos++;
