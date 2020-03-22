@@ -49,3 +49,91 @@ for(hasta M+2){
         Malla[i] = new celula;
     }
 }
+
+
+# --------------------------- CONTINUACIÓN PARA P3 --------------------------- #
+
+1· objetivo -> herencia + polimorfismo.
+
+2· RESUMEN DE ENUNCIADO:
+
+   - Reglas de transición denotadas como [nums supervivenia]/[nums nacimiento] (por ejemplo en estandar 23/3)
+   
+   - En la siguiente versión del juego coexisten varios tipos de célula en el mismo tablero.
+        ( La herencia se hace de la clase base de célula a los otros tipos )
+   - Cada tipo de célula implementa una regla de transición propia -> jerarquía de clase con métodos polimórficos.
+    
+    Jerarquía de clases:
+                                [Celula_t]
+                                    |
+                    ---------------------------------
+                    |         |           |         | 
+                [chispa] [replicante] [Vida 34] [Conaway]
+
+   - Se quiere implementar al menos:
+      · Conaway: 23/3
+      · MLN:     245/368
+      · LV:      15/346
+
+    - EL TABLERO: 
+        · contiene una malla de punteros a células base, (que alojan distintos tipos de célula)   
+
+
+3· NOTAS:
+
+    clase célula:
+
+    `````````
+    class cell_t {
+        ...
+        public:
+        static Cell* createCell(int, int, int);
+        virtual int getState() const;
+        virtual int neighbours(const board&);
+        virtual int update();               // Born rules
+        virtual ostream& write(ostream&) const;
+    };
+
+    `````````
+    - Representa las células muertas
+    - update devuelve un valor entero que identifica el tipo de célula que debe nacer
+    - Se añade createCell() que crea en memoria dinámica una célula de cualquiera de los tipos.
+        · Recibe: tipo de célula (0 para base, [1...n] para otras)
+        · Devuelve: un puntero a la célula creada
+
+        (para el cumplimiento simultáneo de las reglas para una posición recibe también el orden de prioridad )
+    
+    - El estado se define por el tipo de objeto que representa (1,2,3, ...), se puede prescindir del atributo estado
+            (getState depende del tipo de célula)
+    
+    - La visualización de la célula representa su tipo, las muertas no imprimen (polimorfismo de mostrar)
+
+
+    clases hijas:
+
+    class cell_1: publi cell_t {
+    ...
+      public:
+        int update();
+        ostream& write(ostream&) const
+    ...
+    };
+
+    - Difieren en los comportamientos de update y write
+        · update implementa solo la regla de nacimiento derivada
+        · update devuelve 0 cuando una célula deba morir
+        · update informa al tablero del tipo de célula que existe en una posición en el siguiente turno.
+            (El tablero debe sustituir la célula, crear y destruir cuando cambie el tipo)
+    
+    clase tablero:
+
+     - El método que inicializa el estado en el turno 0 solicita las posiciones donde habrá vida 
+       inicialmente y el tipo de cáda célula, las crea y las sustituye en el tablero.
+
+     - Método que controla el cambio de turno (3 pasos):
+
+        1º  Cada célula inspecciona sus vecinas mediante "neighbours()"
+        2º  Cada célula actualiza su estado, usando "update()", y devuelve el 
+            código que informa sobre la sustitución de esta.
+        3º  Cada célula del tablero se muestra en pantalla mediante su método "write()".
+        
