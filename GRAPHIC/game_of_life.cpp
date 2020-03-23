@@ -52,7 +52,7 @@ void display()
             if (cells.at(i,j).get_state()) 
                 // The next function paints the alive cell in the position of the window as it is in the matrix of cells 
                 //            x dimension , y dimension
-                glVertex2f(cells.size()/2 + i * size_, cells.size()/2 + j * size_); 
+                glVertex2f(cells.size()/2 + j * size_, cells.size()/2 + i * size_); 
 
                 /// MOUSE CELL PAINTING ///
 
@@ -66,7 +66,7 @@ void display()
     // if the mouse isn't  clicking the last position of the mouse is drawed as white but not setted the cell as alive
     else {
         int j = m_x/cells.size();  int i = m_y/cells.size();
-        glVertex2f(cells.size()/2 + cells.size() * i, cells.size()/2 + cells.size() * j );
+        glVertex2f(cells.size()/2 + cells.size() * j, cells.size()/2 + cells.size() * i );
     }
     // finally we end the "drawing time"
     glEnd();
@@ -91,6 +91,12 @@ void update()
         for (int j = 0; j < cells.get_m(); ++j)
       {
             cells.at(i, j).updateState();
+      }
+
+      for (int i = 0; i < cells.get_n(); ++i) 
+        for (int j = 0; j < cells.get_m(); ++j)
+      {
+          cells.at(i, j).set_state( cells.at(i,j).get_next() );
       }
 }
 
@@ -153,6 +159,8 @@ void timer(int = 0)
     if (play) 
         update(); 
 
+
+      
     // this shows the actual state in the window
         display();
 
@@ -162,7 +170,7 @@ void timer(int = 0)
 }
 
 // this function tracks the mouse position and interaction
-void mouse (int button, int state, int ay, int ax)
+void mouse (int button, int state, int ax, int ay)
 {
     m_y = ay; //| -> position
     m_x = ax; //|
@@ -170,7 +178,7 @@ void mouse (int button, int state, int ay, int ax)
 }
 
 // captures the mouse motion in the scene
-void motion (int ay, int ax)
+void motion (int ax, int ay)
 {
     m_x = ax;
     m_y = ay;
@@ -178,7 +186,7 @@ void motion (int ay, int ax)
 
 
 // captures the passive mouse motion in the scene
-void motionpass (int ay, int ax)
+void motionpass (int ax, int ay)
 {
    m_x = ax;
    m_y = ay;

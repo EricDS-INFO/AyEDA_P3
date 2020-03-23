@@ -85,18 +85,19 @@ int cell_t::updateState(void)
     {
         if (alive_neighbours_ != 2 &&
             alive_neighbours_ != 3 )
-            alive_ = 0;
+            next_ = 0;
         else
-            alive_ = 1;
+            next_ = 1;
     }
     
     if ( alive_ == 0 )
     {
-        if (alive_neighbours_ != 3 &&
-            alive_neighbours_ != 6)
-            alive_ = 0;
+        if (
+            alive_neighbours_ == 3 ||
+            alive_neighbours_ == 6 )
+            next_ = 1;
         else
-            alive_ = 1;
+            next_ = 0;
     }
 
     return alive_;   
@@ -172,10 +173,10 @@ int cell_t::count_neighbours(const board_t& board)
 
 
 // this function captures the left cell values
-int cell_t::left(int pos, int m)
+int cell_t::left(int pos, int n)
 {
     if (pos == 0 ) 
-        pos = m - 1; 
+        pos = n - 1; 
     else 
         pos--;
  return pos;
@@ -183,9 +184,9 @@ int cell_t::left(int pos, int m)
 
 
 // this function captures the right cell values
-int cell_t::right(int pos, int m)
+int cell_t::right(int pos, int n)
 {
-    if (pos == m - 1 ) 
+    if (pos == n - 1 ) 
         pos = 0; 
     else 
         pos++;
@@ -193,19 +194,19 @@ int cell_t::right(int pos, int m)
 }
 
 // this function captures the up cell values
-int cell_t::up(int pos, int n)
+int cell_t::up(int pos, int m)
 {
     if (pos == 0 ) //if actual position is 0 in y axis in matrix, we get the greater number
-        pos = n - 1; 
+        pos = m - 1; 
     else 
         pos--;     // we decrease one position in y axis.
  return pos;
 }
 
 // this function captures the down cell values
-int cell_t::down(int pos, int n)
+int cell_t::down(int pos, int m)
 {
-    if (pos == n - 1 ) 
+    if (pos == m - 1 ) 
         pos = 0; 
     else 
         pos++;

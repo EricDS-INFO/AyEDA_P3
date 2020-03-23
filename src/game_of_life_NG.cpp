@@ -130,6 +130,13 @@ void run_generations(int it, int n, int m, board_t& cells)
                 cells.at(i,j).updateState();
             }
         }
+
+        for (int i = 0; i < cells.get_n(); i++) {
+            for (int j = 0; j < cells.get_m(); j++)
+            {
+                cells.at(i, j).set_state( cells.at(i,j).get_next() );
+            }
+        }
     
         std::cout << "Turno" << it <<  ": \n";
         cells.write(std::cout);        
@@ -186,22 +193,37 @@ int select_1by1(int n, int m, board_t& cells)
 {
 
     write_pattern(n ,m);   
+    int x = 1;
+    std::vector< std::pair<int, int> > nums;
 
-    std::cout << "Pulse 1 para indicar que está viva y enter para no hacer nada\n\n";
+    std::cout << "Indique la secuencia de números por pareja que quiere que sean células vivas \n\n";
+    
+    while (x != 0) {
+        std::pair<int,int> aux;
+        std::cout << "introduzca una pareja de coordenadas: \n";
+        std::cout << "Y: ";
+        std::cin >> aux.first;
+        std::cout << "X: ";
+        std::cin >> aux.second;
+        
+        nums.push_back(aux);
+
+        std::cout << "¿Desea terminar ? 0 -> si, otro -> no :";
+        std::cin >> x;
+    }
+
     
     for (int i = 1 ; i < n + 1; i++)
     {
         for (int j = 1 ; j < m + 1; j++)
         {
-            int op = 0;
-            std::cout << "Célula" 
-            << "[" << i - 1 << "][" <<  j - 1 << "]: ";
-            std::cin >> op; 
-            if (op == 1 || op == 0)
-                cells.at(i, j).set_state(op);
+            for (unsigned int k = 0; k < nums.size(); k++)
+                if (i == nums[k].first && j == nums[k].second )
+                    cells.at(i,j).set_state(1);
+
         }
     }
-    return 1;
+    return 0;
 } 
 
 
