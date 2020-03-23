@@ -21,36 +21,41 @@ class board_t;
 class cell_t
 {
     private:
-        bool alive_;
-        bool next_;
+        // debe no depender de este atributo
         
         int i_, j_;
         int n_, m_;
-
+    protected:
         int alive_neighbours_;
 
+    public:
+        static cell_t* create_cell(int type, int i, int j);
+       
+
+        cell_t(int i, int j):
+        i_(i), 
+        j_(j){};
         
 
-    public:
-        cell_t():
-        alive_(false), 
-        next_(false){};
         ~cell_t(void){};
 
-        int get_state(void) const;
-        int get_next(void);
+        virtual int get_state(void) const;
+        virtual int get_next(void);
 
-        int set_state(int state);
-        void set_next(int next);
+        virtual int set_state(int state);
+        virtual void set_next(int next);
 
-        int get_i_pos(void);
-        void set_i_pos(int i);
+        virtual int get_i_pos(void);
+        virtual void set_i_pos(int i);
 
-        int get_j_pos(void);
-        void set_j_pos(int j);
+        virtual int get_j_pos(void);
+        virtual void set_j_pos(int j);
 
-        int updateState(void);
-        int count_neighbours(const board_t& board);
+        /* Ahora va a devolver el tipo de célula*/
+        virtual int update_state(void);
+
+        /*Este método opera igual*/
+        virtual int count_neighbours(const board_t& board);
 
         std::ostream& write( std::ostream& os);
         friend std::ostream& operator<< (std::ostream& os, cell_t& cell);

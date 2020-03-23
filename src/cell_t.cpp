@@ -15,15 +15,43 @@
 
 
 #include "../include/cell_t.hpp"
+
+#include "../include/cell_1.hpp"
+
 #include "../include/board_t.hpp"
 
 #include <iostream>
 #define INFINITE 1
 
+cell_t* cell_t::create_cell(int type, int i, int j)
+{
+    cell_t* current_cell;
+
+    switch (type)
+    {
+    case 0:
+        current_cell = new cell_t(i, j);
+        break;
+    
+    case 1:
+        current_cell = new cell_1(i, j);
+        break;
+    
+  
+    default:
+        std::cout << "unknown cell \n";
+        std::exit(1);
+        break;
+    }
+
+    return current_cell;
+}
+
 int cell_t::get_state(void) const 
 {
-    return alive_;
+    return 0;
 }
+
 int cell_t::get_next(void) 
 {
     return next_;
@@ -65,9 +93,7 @@ void cell_t::set_j_pos(int j)
 
 std::ostream& cell_t::write( std::ostream& os) 
 {
-    if (alive_) os << "x";
-    else        os << " ";
-
+    os << " ";
     return os;
 }
 
@@ -79,28 +105,14 @@ std::ostream& operator<<(std::ostream& os, cell_t& cell)
 }
 
 
-int cell_t::updateState(void)
+int cell_t::update_state(void)
 {
-    if ( alive_ == 1 )
-    {
-        if (alive_neighbours_ != 2 &&
-            alive_neighbours_ != 3 )
-            next_ = 0;
-        else
-            next_ = 1;
-    }
+    if ( alive_neighbours_ == 2 ||
+         alive_neighbours_ == 3)
+        return 1;
+    else
+        return 0;
     
-    if ( alive_ == 0 )
-    {
-        if (
-            alive_neighbours_ == 3 ||
-            alive_neighbours_ == 6 )
-            next_ = 1;
-        else
-            next_ = 0;
-    }
-
-    return alive_;   
 }
 
 
