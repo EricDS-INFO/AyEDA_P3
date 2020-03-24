@@ -40,10 +40,8 @@ class cell_t
         ~cell_t(void){};
 
         virtual int get_state(void) const;
-        virtual int get_next(void);
 
         virtual int set_state(int state);
-        virtual void set_next(int next);
 
         virtual int get_i_pos(void);
         virtual void set_i_pos(int i);
