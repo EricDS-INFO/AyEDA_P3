@@ -9,15 +9,19 @@ class cell_3: public cell_t
     
     private:
     int i_, j_;
+    
     public:
     cell_3(int i, int j):
     i_(i), 
     j_(j){}
 
-    int get_state();
+    ~cell_3(){}
 
-    int update();
-    std::ostream& write(std::ostream& os) const;
+    int get_state() const;
+
+    int update_state();
+    std::ostream& write(std::ostream& os);
+    friend std::ostream& operator<< (std::ostream& os, cell_3& cell);
 };
 
 #endif

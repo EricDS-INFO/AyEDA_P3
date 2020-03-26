@@ -26,7 +26,7 @@ class board_t
 private:
     std::pair<int,int> dimensions_;
     int cell_size_;
-    cell_t** cell_grid_;
+    cell_t*** cell_grid_;
 public:
 
     board_t(int n, int m);
@@ -36,14 +36,13 @@ public:
     inline  int get_n() const { return dimensions_.first ; }
     inline  int get_m() const { return dimensions_.second ; }
     inline  int  size() const { return cell_size_; } 
-    
 
-    cell_t& at(int i, int j) const;
-    cell_t& at(int i,  int j);
+    void stage_zero();
+    void transition();    
 
-    //cell_t& const operator[](int i ) const;
+    cell_t* at(int i, int j) const;
+    cell_t* at(int i,  int j);
 
-    cell_t& operator[](std::pair<int,int>& index);
     std::ostream& write(std::ostream& os);
 
 };

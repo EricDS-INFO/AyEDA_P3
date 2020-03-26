@@ -31,6 +31,7 @@ class cell_t
     public:
         static cell_t* create_cell(int type, int i, int j);
        
+        cell_t(void){}
 
         cell_t(int i, int j):
         i_(i), 
@@ -41,7 +42,6 @@ class cell_t
 
         virtual int get_state(void) const;
 
-        virtual int set_state(int state);
 
         virtual int get_i_pos(void);
         virtual void set_i_pos(int i);

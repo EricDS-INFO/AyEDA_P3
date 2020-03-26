@@ -10,29 +10,29 @@
 #include <iostream>
 
 
-int cell_1::update_state() 
+int cell_3::update_state() 
 {
-    if (alive_neighbours_!= 2 &&
-        alive_neighbours_!= 3 )
+    if (alive_neighbours_!= 5 &&
+        alive_neighbours_!= 1 )
         return 0;
     else
-        return 1;
+        return 3;
     
 }
 
 
-int cell_1::get_state(void) const 
+int cell_3::get_state(void) const 
 {
-    return 1;
+    return 3;
 }
 
-std::ostream& cell_1::write(std::ostream& os)
+std::ostream& cell_3::write(std::ostream& os)
 {
-    os << "1";
+    os << "3";
     return os;
 } 
 
-std::ostream& operator<<(std::ostream& os, cell_1& cell)
+std::ostream& operator<<(std::ostream& os, cell_3& cell)
 {
     cell.write(os);
 

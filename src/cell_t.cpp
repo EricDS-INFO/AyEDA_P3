@@ -17,6 +17,8 @@
 #include "../include/cell_t.hpp"
 
 #include "../include/cell_1.hpp"
+#include "../include/cell_2.hpp"
+#include "../include/cell_3.hpp"
 
 #include "../include/board_t.hpp"
 
@@ -37,6 +39,13 @@ cell_t* cell_t::create_cell(int type, int i, int j)
         current_cell = new cell_1(i, j);
         break;
     
+    case 2:
+        current_cell = new cell_2(i, j);
+        break;
+
+    case 3:
+        current_cell = new cell_3(i, j);
+        break;
   
     default:
         std::cout << "unknown cell \n";
@@ -51,24 +60,6 @@ int cell_t::get_state(void) const
 {
     return 0;
 }
-
-int cell_t::get_next(void) 
-{
-    return next_;
-}
-
-
-int cell_t::set_state(int state) 
-{
-    alive_ = state;
-    return alive_;
-}
-
-void cell_t::set_next(int next) 
-{
-    next_ = next;
-}
-
 
 
 int cell_t::get_i_pos(void)
@@ -107,9 +98,19 @@ std::ostream& operator<<(std::ostream& os, cell_t& cell)
 
 int cell_t::update_state(void)
 {
-    if ( alive_neighbours_ == 2 ||
-         alive_neighbours_ == 3)
+    if ( alive_neighbours_ == 3)
         return 1;
+
+
+    if ( alive_neighbours_ == 3 ||
+         alive_neighbours_ == 6 ||
+         alive_neighbours_ == 8)
+        return 2;
+    
+    if ( alive_neighbours_ == 3 ||
+         alive_neighbours_ == 4 ||
+         alive_neighbours_ == 6)
+        return 3;
     else
         return 0;
     
@@ -120,61 +121,27 @@ int cell_t::count_neighbours(const board_t& board)
 {
     int neighbours = 0;
     
-    if (!INFINITE)
-    {
+    
         // Check the basic axis
-        /* LEFT */
-        if (board.at(i_ - 1, j_).get_state() == 1)         neighbours++;
-        /* RIGHT */
-        if (board.at(i_ + 1, j_).get_state() == 1)         neighbours++;
         /* UP */
-        if (board.at(i_, j_ - 1).get_state() == 1)         neighbours++;
+        if (board.at(i_ - 1, j_)->get_state() != 0)         neighbours++;
         /* DOWN */
-        if (board.at(i_, j_ + 1).get_state() == 1)         neighbours++;
+        if (board.at(i_ + 1, j_)->get_state() != 0)         neighbours++;
+        /* LEFT */
+        if (board.at(i_, j_ - 1)->get_state() != 0)         neighbours++;
+        /* RIGHT */
+        if (board.at(i_, j_ + 1)->get_state() != 0)         neighbours++;
 
         //check the diagonal axis:
         /*1st square*/
-        if (board.at(i_ - 1, j_ - 1).get_state() == 1)     neighbours++;
+        if (board.at(i_ - 1, j_ - 1)->get_state() != 0)     neighbours++;
         /*2nd square*/
-        if (board.at(i_ + 1, j_ - 1).get_state() == 1)     neighbours++;
+        if (board.at(i_ + 1, j_ - 1)->get_state() != 0)     neighbours++;
         /*3rd square*/
-        if (board.at(i_ - 1, j_ + 1).get_state() == 1)     neighbours++;
+        if (board.at(i_ - 1, j_ + 1)->get_state() != 0)     neighbours++;
         /*4th square*/
-        if (board.at(i_ + 1, j_ + 1).get_state() == 1)     neighbours++;   
-    }
-    if (INFINITE)
-    {
-        int n = board.get_n();
-        int m = board.get_m();
-        // Check the basic axis
-        /* LEFT */
-        if (board.at(i_, left(j_, m)).get_state() == 1)         
-            neighbours++;
-        /* RIGHT */
-        if (board.at(i_, right(j_, m)).get_state() == 1)         
-            neighbours++;
-        /* UP */
-        if (board.at(up(i_, n), j_).get_state() == 1)         
-            neighbours++;
-        /* DOWN */
-        if (board.at(down(i_, n), j_).get_state() == 1)         
-            neighbours++;
-
-        //check the diagonal axis:
-        /*1st edje*/
-        if (board.at(up(i_, n), left(j_, m)).get_state() == 1)     
-            neighbours++;
-        /*2nd edje*/
-        if (board.at(up(i_, n), right(j_, m)).get_state() == 1)     
-            neighbours++;
-        /*3rd edje*/
-        if (board.at(down(i_, n), left(j_, m)).get_state() == 1)     
-            neighbours++;
-        /*4th edje*/
-        if (board.at(down(i_, n), right(j_, m)).get_state() == 1)     
-            neighbours++;   
-       
-    }
+        if (board.at(i_ + 1, j_ + 1)->get_state() != 0)     neighbours++;   
+    
         
     alive_neighbours_ = neighbours;
 

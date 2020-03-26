@@ -13,10 +13,14 @@ class cell_1: public cell_t
     i_(i), 
     j_(j){}
 
-    int get_state();
+    ~cell_1(){}
+
+    int get_state() const;
 
     int update_state();
-    std::ostream& write(std::ostream& os) const;
+    std::ostream& write(std::ostream& os);
+    friend std::ostream& operator<< (std::ostream& os, cell_1& cell);
+
 };
 
 #endif

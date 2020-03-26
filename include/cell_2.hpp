@@ -1,6 +1,5 @@
 #include "cell_t.hpp"
 
-
 #ifndef CELL_2
 #define CELL_2
 
@@ -16,10 +15,13 @@ class cell_2: public cell_t
     i_(i), 
     j_(j){}
 
-    int get_state();
-    
-    int update();
-    std::ostream& write(std::ostream& os) const;
+    ~cell_2(){}
+
+    int get_state() const;
+
+    int update_state();
+    std::ostream& write(std::ostream& os);
+    friend std::ostream& operator<< (std::ostream& os, cell_2& cell);
 };
 
 #endif
