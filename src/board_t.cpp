@@ -111,7 +111,9 @@ std::ostream& board_t::write(std::ostream& os)
         os << "║";
         for (int j = 1; j < dimensions_.second - 1; j++ )
         {
-            os << " " << cell_grid_[i][j]->get_state() << " ";       
+            os << " ";
+            os << cell_grid_[i][j]->get_state();
+            os << " ";       
         }
         os << "║\n";
     }
@@ -147,8 +149,6 @@ void board_t::stage_zero()
             std::cin >> type;
             delete cell_grid_[i][j];
             cell_grid_[i][j] = cell_grid_[i][j]->create_cell(type, i, j);
-            std::cout << "célula creada: " 
-            << cell_grid_[i][j]->get_state() << std::endl;
         }
     }
 }
@@ -168,9 +168,6 @@ void board_t::transition()
     {
         for (int j = 1 ; j < dimensions_.second -1 ; j++)
         {
-            std::cout << "se actualiza una célula: "
-                     << cell_grid_[i][j]->get_state()
-                     <<"\n";
            int state = cell_grid_[i][j]->update_state();
            if (cell_grid_[i][j]->get_state() != state)
            {

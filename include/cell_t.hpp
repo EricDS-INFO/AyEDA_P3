@@ -30,7 +30,6 @@ class cell_t
 
     public:
         static cell_t* create_cell(int type, int i, int j);
-       
         cell_t(void){}
 
         cell_t(int i, int j):

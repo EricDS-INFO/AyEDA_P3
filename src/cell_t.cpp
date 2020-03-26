@@ -19,6 +19,7 @@
 #include "../include/cell_1.hpp"
 #include "../include/cell_2.hpp"
 #include "../include/cell_3.hpp"
+#include "../include/cell_x.hpp"
 
 #include "../include/board_t.hpp"
 
@@ -46,7 +47,10 @@ cell_t* cell_t::create_cell(int type, int i, int j)
     case 3:
         current_cell = new cell_3(i, j);
         break;
-  
+
+    case 4:
+        current_cell = new cell_x(i, j);
+        break;
     default:
         std::cout << "unknown cell \n";
         std::exit(1);
@@ -55,6 +59,7 @@ cell_t* cell_t::create_cell(int type, int i, int j)
 
     return current_cell;
 }
+
 
 int cell_t::get_state(void) const 
 {
@@ -111,8 +116,13 @@ int cell_t::update_state(void)
          alive_neighbours_ == 4 ||
          alive_neighbours_ == 6)
         return 3;
-    else
-        return 0;
+
+
+    if ( alive_neighbours_ == 1)
+        return 4;
+    
+    
+    return 0;
     
 }
 

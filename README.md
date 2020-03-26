@@ -15,7 +15,7 @@
 ## Dependencias
 
 - [OpenGL](https://www.opengl.org/)
-> (si pretende probar la versión gráfica debe instalar la librería GLUT, la cual es una colección de herramientas de open gl)
+> (si pretende probar la versión gráfica debe instalar la librería GLUT, la cual es una colección de herramientas de open gl y moverse a la rama "nowgraphicmulticell")
 
 Para adquirirla:
   ```
