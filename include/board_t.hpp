@@ -38,7 +38,9 @@ public:
     inline  int  size() const { return cell_size_; } 
 
     void stage_zero();
-    void transition();    
+    void transition();
+    void death();    
+    void set_basic(int i, int j);
 
     cell_t* at(int i, int j) const;
     cell_t* at(int i,  int j);

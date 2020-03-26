@@ -121,7 +121,8 @@ int cell_t::count_neighbours(const board_t& board)
 {
     int neighbours = 0;
     
-    
+    if(!INFINITE)
+    {
         // Check the basic axis
         /* UP */
         if (board.at(i_ - 1, j_)->get_state() != 0)         neighbours++;
@@ -141,7 +142,33 @@ int cell_t::count_neighbours(const board_t& board)
         if (board.at(i_ - 1, j_ + 1)->get_state() != 0)     neighbours++;
         /*4th square*/
         if (board.at(i_ + 1, j_ + 1)->get_state() != 0)     neighbours++;   
-    
+    }
+
+    if (INFINITE)
+    {
+        int n = board.get_n();
+        int m = board.get_m();
+        // Check the basic axis
+        /* LEFT */
+        if (board.at(left(i_, n), j_)->get_state() != 0)         neighbours++;
+        /* RIGHT */
+        if (board.at(right(i_, n), j_)->get_state() != 0)         neighbours++;
+        /* UP */
+        if (board.at(i_, up(j_, m))->get_state() != 0)         neighbours++;
+        /* DOWN */
+        if (board.at(i_, down(j_, m))->get_state() != 0)         neighbours++;
+
+        //check the diagonal axis:
+        /*1st square*/
+        if (board.at(left(i_, n), up(j_, m))->get_state() != 0)     neighbours++;
+        /*2nd square*/
+        if (board.at(right(i_, n), up(j_, m))->get_state() != 0)     neighbours++;
+        /*3rd square*/
+        if (board.at(left(i_, n), down(j_, m))->get_state() != 0)     neighbours++;
+        /*4th square*/
+        if (board.at(right(i_, n), down(j_, m))->get_state() != 0)     neighbours++;   
+       
+    }
         
     alive_neighbours_ = neighbours;
 

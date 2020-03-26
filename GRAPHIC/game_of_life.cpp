@@ -7,6 +7,11 @@
 //#include <SDL/SDL.h>
 
 #include "../src/cell_t.cpp"
+
+#include "../src/cell_1.cpp"
+#include "../src/cell_2.cpp"
+#include "../src/cell_3.cpp"
+
 #include "../src/board_t.cpp"
 
 
@@ -36,7 +41,6 @@ void display()
     glClear(GL_COLOR_BUFFER_BIT); 
 
     // then the object color is setted (to white in this case (RGB))
-    glColor3ub(255,255,255);
 
     // We give the point a size that represents the cell
     glPointSize(size_);
@@ -47,21 +51,33 @@ void display()
                 /// DEFAULT CELL PAINTING ///
 
     // We ride all the matrix in order to search the alive cells and draw them in the window
-    for (int i = 0; i < cells.get_n(); ++i)
-        for (int j = 0; j < cells.get_m(); ++j)
-            if (cells.at(i,j).get_state()) 
-                // The next function paints the alive cell in the position of the window as it is in the matrix of cells 
-                //            x dimension , y dimension
-                glVertex2f(cells.size()/2 + j * size_, cells.size()/2 + i * size_); 
-
+    for (int i = 0; i < cells.get_n() ; ++i)
+        for (int j = 0; j < cells.get_m() ; ++j)
+        {
+         if (cells.at(i,j)->get_state() != 0)
+         {
+            if (cells.at(i,j)->get_state() == 1)
+            {
+                    glColor3ub(255,255,255);
+            } 
+            else if (cells.at(i,j)->get_state() == 2)
+            {
+                    glColor3ub(255,0,0);
+            } 
+            else if (cells.at(i,j)->get_state() == 3)
+            {
+                    glColor3ub(0,0,255);
+            }
+            glVertex2f(cells.size()/2 + j * size_, cells.size()/2 + i * size_); 
+         }
+        }   
                 /// MOUSE CELL PAINTING ///
 
     // This conditional check the mouse movement for the user giving life to cells
     if (m_down && m_x > 0 && m_y > 0 &&  
         m_x < cells.get_m() * cells.size() && 
         m_y < cells.get_n() * cells.size() )
-
-       cells.at(m_y/cells.size(), m_x/cells.size()).set_state(true);
+       cells.set_basic(m_y/cells.size(), m_x/cells.size());
         
     // if the mouse isn't  clicking the last position of the mouse is drawed as white but not setted the cell as alive
     else {
@@ -82,22 +98,7 @@ void display()
 void update()
 {
       // We watch the entire matrix of cells (each cell) for checking the status
-      for (int i = 0; i < cells.get_n(); ++i) 
-        for (int j = 0; j < cells.get_m(); ++j)
-      {
-            cells.at(i, j).count_neighbours(cells);
-      }
-      for (int i = 0; i < cells.get_n(); ++i) 
-        for (int j = 0; j < cells.get_m(); ++j)
-      {
-            cells.at(i, j).updateState();
-      }
-
-      for (int i = 0; i < cells.get_n(); ++i) 
-        for (int j = 0; j < cells.get_m(); ++j)
-      {
-          cells.at(i, j).set_state( cells.at(i,j).get_next() );
-      }
+        cells.transition();     
 }
 
 
@@ -122,8 +123,7 @@ void selector( unsigned char key, int xmouse, int ymouse)
         for (int i = 0; i < cells.get_n(); ++i) 
             for (int j = 0; j < cells.get_m(); ++j) 
         {
-                cells.at(i, j).set_next(false);
-                cells.at(i, j).set_state(false); 
+            cells.death();
         }
         
         play = 0;
