@@ -136,7 +136,7 @@ void board_t::stage_zero()
     std::cout << "Deberá indicar el tipo de célula y la posición en la que ese encuentra\n"; 
     std::cout << "Introduzca: \n"
               << "0 - para una célula muerta (valor por defecto)\n"
-              << "1 - para una célula 23/3 \n";
+              << "1 - para una célula 23/3 \n\n";
     for (int i  = 1; i < dimensions_.first - 1; i++)
     {
         for (int j = 1; j < dimensions_.second -1; j++ )
